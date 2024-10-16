@@ -22,7 +22,6 @@ requirements:
     - libxcrypt  # [unix]
     - llvm-tools  # [win]
     - sed  # [unix]
-    - m2w64-binutils  # [win]
 
 outputs:
   - name: libblst
