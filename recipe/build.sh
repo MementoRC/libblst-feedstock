@@ -4,8 +4,6 @@ set -euxo pipefail
 
 # C lib
 if [[ "${target_platform}" == win-* ]]; then
-  # Remove -fPIC from CFLAGS, replace with -fstack-protector-strong
-  sed -i 's/-fPIC/-fstack-protector/g' build.sh
   B_ARGS=('-dll' 'flavour=mingw64' 'CC=x86_64-w64-mingw32-gcc' 'AR=llvm-ar')
 elif [[ "${target_platform}" == linux-* ]]; then
   B_ARGS=('-shared' "-Wl,-soname=libblst.so")
