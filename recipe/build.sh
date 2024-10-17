@@ -17,6 +17,7 @@ bash ./build.sh "${B_ARGS[@]}"
 if [[ "${target_platform}" == win-* ]]; then
   mkdir -p "${PREFIX}"/Library/bin
   install -m755 blst.dll "${PREFIX}"/Library/bin/blst.dll
+  install -m644 blst.lib "${PREFIX}"/Library/lib/blst.lib
 elif [[ "${target_platform}" == osx-* ]]; then
   mkdir -p "${PREFIX}"/lib
   install -m755 libblst.dylib "${PREFIX}"/lib/libblst.dylib
