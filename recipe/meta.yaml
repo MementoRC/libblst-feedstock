@@ -18,6 +18,8 @@ requirements:
   build:
     - {{ compiler('c') }}  # [not win]
     - {{ compiler('m2w64_c') }}  # [win]
+    - m2-diffutils # [win]
+    - m2-grep # [win]
     - {{ stdlib('c') }}
     - libxcrypt  # [unix]
     - llvm-tools  # [win]

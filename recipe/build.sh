@@ -18,7 +18,7 @@ if [[ "${target_platform}" == win-* ]]; then
   mkdir -p "${PREFIX}"/Library/bin
   install -m755 blst.dll "${PREFIX}"/Library/bin/blst.dll
 
-  lib_cmd="lib /def:build/win64/blst.def /out:\"${PREFIX}/Library/lib/blst.lib\" /machine:x64"
+  lib_cmd="lib /def:build\win64\blst.def /out:\"${PREFIX/\\/\/}\Library\lib\blst.lib\" /machine:x64"
   cmd.exe /c "$lib_cmd"
   # dlltool \
   #   -d build/win64/blst.def\
