@@ -4,8 +4,6 @@ set -euxo pipefail
 
 # C lib
 if [[ "${target_platform}" == win-* ]]; then
-  # Remove -fPIC from CFLAGS
-  sed -i 's/-fPIC//g' build.sh
   B_ARGS=('-dll' 'flavour=mingw64' 'CC=x86_64-w64-mingw32-gcc' 'AR=llvm-ar')
 elif [[ "${target_platform}" == linux-* ]]; then
   B_ARGS=('-shared' "-Wl,-soname=libblst.so")
@@ -19,12 +17,7 @@ bash ./build.sh "${B_ARGS[@]}"
 if [[ "${target_platform}" == win-* ]]; then
   mkdir -p "${PREFIX}"/Library/bin
   install -m755 blst.dll "${PREFIX}"/Library/bin/blst.dll
-
-  dlltool \
-    -d build/win64/blst.def\
-    -l "${PREFIX}"/Library/lib/blst.lib \
-    -D "${PREFIX}"/Library/bin/blst.dll
-
+  install -m644 blst.lib "${PREFIX}"/Library/lib/blst.lib
 elif [[ "${target_platform}" == osx-* ]]; then
   mkdir -p "${PREFIX}"/lib
   install -m755 libblst.dylib "${PREFIX}"/lib/libblst.dylib
