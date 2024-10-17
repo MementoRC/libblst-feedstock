@@ -56,4 +56,4 @@
 +                CFLAGS="${CFLAGS} -lgcc";;
 @@ -126,1 +84,1 @@
 -                   -Wl,--whole-archive,libblst.a,--no-whole-archive ${CFLAGS} \
-+                   -Wl,--whole-archive,blst.lib,--no-whole-archive ${CFLAGS} \
++                   -Wl,--whole-archive,libblst.a,--no-whole-archive -Wl,--out-implib,blst.lib ${CFLAGS} \
