@@ -12,7 +12,7 @@ source:
     - patches/0001-win-simplify-build.sh.patch  # [win]
 
 build:
-  number: 1
+  number: 2
 
 requirements:
   build:
@@ -28,6 +28,8 @@ requirements:
 outputs:
   - name: libblst
     build:
+      run_exports:
+        - {{ pin_subpackage('libblst', max_pin='x.x') }}
       ignore_run_exports:
         - ucrt  # [win]
         - vc14_runtime  # [win]
