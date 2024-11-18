@@ -11,7 +11,7 @@ elif [[ "${target_platform}" == osx-64 ]]; then
   B_ARGS=('-shared')
 elif [[ "${target_platform}" == osx-arm64 ]]; then
   # export CFLAGS="${CFLAGS}"
-  B_ARGS=('-shared -flavour=macosx')
+  B_ARGS=('-shared' '-flavour=macosx')
 else
   B_ARGS=('-shared')
 fi
