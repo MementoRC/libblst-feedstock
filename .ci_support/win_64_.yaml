@@ -4,9 +4,14 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
+libblst:
+- '0.3'
 m2w64_c_compiler:
 - gcc
 m2w64_c_compiler_version:
 - '13'
+pin_run_as_build:
+  libblst:
+    max_pin: x.x
 target_platform:
 - win-64
