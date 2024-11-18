@@ -6,7 +6,11 @@ set -euxo pipefail
 if [[ "${target_platform}" == win-* ]]; then
   B_ARGS=('-dll' 'flavour=mingw64' 'CC=x86_64-w64-mingw32-gcc' 'AR=llvm-ar')
 elif [[ "${target_platform}" == linux-* ]]; then
-  B_ARGS=('-shared' "-Wl,-soname=libblst.so")
+  B_ARGS=('-shared' '-Wl,-soname=libblst.so')
+elif [[ "${target_platform}" == osx-64 ]]; then
+  B_ARGS=('-shared')
+elif [[ "${target_platform}" == osx-arm64 ]]; then
+  B_ARGS=('-shared' 'flavour=macosx' "CFLAGS=${CFLAGS} -D__APPLE__")
 else
   B_ARGS=('-shared')
 fi
