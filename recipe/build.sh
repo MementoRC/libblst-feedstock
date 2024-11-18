@@ -11,7 +11,7 @@ elif [[ "${target_platform}" == osx-64 ]]; then
   B_ARGS=('-shared')
 elif [[ "${target_platform}" == osx-arm64 ]]; then
   # export CFLAGS="${CFLAGS}"
-  B_ARGS=('-shared' 'AR=arm64-apple-darwin20.0.0-llvm-ar' 'RANLIB=arm64-apple-darwin20.0.0-llvm-ranlib')
+  B_ARGS=('-shared')
 else
   B_ARGS=('-shared')
 fi
