@@ -22,7 +22,7 @@ requirements:
     - m2-grep  # [win]
     - {{ stdlib('c') }}
     - libxcrypt  # [unix]
-    - llvm-tools  # [win]
+    - llvm-tools  # [win or (osx and arm64)]
     - sed  # [unix]
 
 outputs:

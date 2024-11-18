@@ -10,8 +10,8 @@ elif [[ "${target_platform}" == linux-* ]]; then
 elif [[ "${target_platform}" == osx-64 ]]; then
   B_ARGS=('-shared')
 elif [[ "${target_platform}" == osx-arm64 ]]; then
-  export CFLAGS="${CFLAGS} -D__APPLE__ -D__aarch64__ -arch arm64"
-  B_ARGS=('-shared')
+  # export CFLAGS="${CFLAGS}"
+  B_ARGS=('-shared' 'AR=llvm-ar' 'RANLIB=llvm-ranlib')
 else
   B_ARGS=('-shared')
 fi
