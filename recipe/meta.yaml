@@ -12,15 +12,15 @@ source:
     - patches/0001-win-simplify-build.sh.patch  # [win]
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
     - {{ compiler('c') }}  # [not win]
     - {{ compiler('m2w64_c') }}  # [win]
+    - {{ stdlib('c') }}
     - m2-diffutils  # [win]
     - m2-grep  # [win]
-    - {{ stdlib('c') }}
     - libxcrypt  # [unix]
     - llvm-tools  # [win]
     - sed  # [unix]
