@@ -14,12 +14,7 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-libblst:
-- '0.3'
 macos_machine:
 - x86_64-apple-darwin13.4.0
-pin_run_as_build:
-  libblst:
-    max_pin: x.x
 target_platform:
 - osx-64
