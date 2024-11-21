@@ -53,6 +53,7 @@ outputs:
     test:
       requires:
         - pkg-config
+        - python
       commands:
         - test -f ${PREFIX}/lib/libblst.so  # [linux]
         - test -f ${PREFIX}/lib/libblst.dylib  # [osx]
