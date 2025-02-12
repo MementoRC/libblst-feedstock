@@ -1,5 +1,5 @@
 {% set name = "libblst" %}
-{% set version = "0.3.13" %}
+{% set version = "0.3.14" %}
 
 package:
   name: libblst-split
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://github.com/supranational/blst/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 89772cef338e93bc0348ae531462752906e8fa34738e38035308a7931dd2948f
+  sha256: 2d17ed3087bd37d2aff6fd37c83807831fcc62bcbbe71bb65d32d7ded5749faa
   patches:
     - patches/0001-win-simplify-build.sh.patch  # [win]
 
 build:
-  number: 3
+  number: 0
 
 requirements:
   build:
