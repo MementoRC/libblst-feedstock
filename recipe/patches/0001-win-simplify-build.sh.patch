@@ -1,7 +1,7 @@
 --- build.sh.orig     2024-08-20 10:40:17.860801638 -0500
 +++ build.sh          2024-08-20 10:40:08.708639616 -0500
-@@ -61,51 +61,7 @@
-
+@@ -60,51 +60,6 @@
+ 
 -if [ "x$CC" = "x" ]; then
 -    CC=gcc
 -    which ${CROSS_COMPILE}cc >/dev/null 2>&1 && CC=cc
@@ -20,7 +20,7 @@
 -fi
 -
  predefs=`(${CC} ${CFLAGS} -dM -E -x c /dev/null || true) 2>/dev/null`
-
+-
 -if [ -z "${CROSS_COMPILE}${AR}" ] && echo ${predefs} | grep -q clang; then
 -    search_dirs=`${CC} -print-search-dirs  | awk -F= '/^programs:/{print$2}' | \
 -                 (sed -E -e 's/([a-z]):\\\/\/\1\//gi' -e 'y/\\\;/\/:/' 2>/dev/null || true)`
@@ -46,16 +46,20 @@
 -    cflags="$cflags -D__BLST_NO_ASM__"
 -fi
 +cflags=$(powershell.exe -File ${RECIPE_DIR}/helpers/update_win_cflags.ps1 -predefs "$predefs")
-
+ 
  CFLAGS="$CFLAGS $cflags"
 -TMPDIR=${TMPDIR:-/tmp}
 -
 -rm -f libblst.a
 -trap '[ $? -ne 0 ] && rm -f libblst.a; rm -f *.o ${TMPDIR}/*.blst.$$' 0
-
-@@ -122,1 +78,1 @@
+ 
+@@ -121,3 +76,3 @@
+                 CFLAGS="${CFLAGS} --entry=DllMain ${TOP}/build/win64/dll.c"
 -                CFLAGS="${CFLAGS} -nostdlib -lgcc";;
 +                CFLAGS="${CFLAGS} -lgcc";;
-@@ -126,1 +80,1 @@
+         *)      sharedlib=libblst$dll.so;;
+@@ -125,3 +80,3 @@
+     (set -x; ${CC} -shared -o $sharedlib \
 -                   -Wl,--whole-archive,libblst.a,--no-whole-archive ${CFLAGS} \
 +                   -Wl,--whole-archive,libblst.a,--no-whole-archive -Wl,--out-implib,blst.lib ${CFLAGS} \
+                    -Wl,-Bsymbolic)
