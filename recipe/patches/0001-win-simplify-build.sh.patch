@@ -1,6 +1,6 @@
 --- build.sh.orig     2024-08-20 10:40:17.860801638 -0500
 +++ build.sh          2024-08-20 10:40:08.708639616 -0500
-@@ -60,51 +60,6 @@
+@@ -50,51 +50,6 @@
  
 -if [ "x$CC" = "x" ]; then
 -    CC=gcc
@@ -53,12 +53,7 @@
 -rm -f libblst.a
 -trap '[ $? -ne 0 ] && rm -f libblst.a; rm -f *.o ${TMPDIR}/*.blst.$$' 0
  
-@@ -121,3 +76,3 @@
-                 CFLAGS="${CFLAGS} --entry=DllMain ${TOP}/build/win64/dll.c"
--                CFLAGS="${CFLAGS} -nostdlib -lgcc";;
-+                CFLAGS="${CFLAGS} -lgcc";;
-         *)      sharedlib=libblst$dll.so;;
-@@ -125,3 +80,3 @@
+@@ -131,3 +70,3 @@
      (set -x; ${CC} -shared -o $sharedlib \
 -                   -Wl,--whole-archive,libblst.a,--no-whole-archive ${CFLAGS} \
 +                   -Wl,--whole-archive,libblst.a,--no-whole-archive -Wl,--out-implib,blst.lib ${CFLAGS} \
