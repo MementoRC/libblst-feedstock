@@ -1,6 +1,6 @@
---- build.sh.orig     2024-08-20 10:40:17.860801638 -0500
-+++ build.sh          2024-08-20 10:40:08.708639616 -0500
-@@ -60,51 +60,6 @@
+--- build.sh
++++ build.sh
+@@ -49,68 +49,7 @@
  
 -if [ "x$CC" = "x" ]; then
 -    CC=gcc
@@ -20,7 +20,7 @@
 -fi
 -
  predefs=`(${CC} ${CFLAGS} -dM -E -x c /dev/null || true) 2>/dev/null`
--
+ 
 -if [ -z "${CROSS_COMPILE}${AR}" ] && echo ${predefs} | grep -q clang; then
 -    search_dirs=`${CC} -print-search-dirs  | awk -F= '/^programs:/{print$2}' | \
 -                 (sed -E -e 's/([a-z]):\\\/\/\1\//gi' -e 'y/\\\;/\/:/' 2>/dev/null || true)`
@@ -34,10 +34,27 @@
 -AR=${AR:-${CROSS_COMPILE}ar}
 -RANLIB=${RANLIB:-${CROSS_COMPILE}ranlib}
 -
--if echo ${predefs} | grep -q x86_64; then
--    if (grep -q -e '^flags.*\badx\b' /proc/cpuinfo) 2>/dev/null; then
--        cflags="-D__ADX__ $cflags"
+-if [ -z "${flavour}" ]; then
+-    if echo ${predefs} | grep -q __APPLE__; then
+-        flavour=macosx
+-    elif echo ${predefs} | grep -q _WIN32; then
+-        flavour=mingw64
+-        if [ $shared ]; then
+-            cflags="$cflags -D__BLST_DLL_MAIN__"
+-        fi
+-    else
+-        flavour=elf
 -    fi
+-fi
+-if echo ${predefs} | grep -q x86_64; then
+-    case `uname -s` in
+-        Darwin) if [ "`sysctl -n hw.optional.adx 2>/dev/null`" = "1" ]; then
+-                    cflags="-D__ADX__ $cflags"
+-                fi;;
+-        *)      if (grep -q -e '^flags.*\badx\b' /proc/cpuinfo) 2>/dev/null; then
+-                    cflags="-D__ADX__ $cflags"
+-                fi;;
+-    esac
 -fi
 -if echo ${predefs} | grep -q __AVX__; then
 -    cflags="$cflags -mno-avx" # avoid costly transitions
@@ -45,21 +62,17 @@
 -if echo ${predefs} | grep -E -q 'x86_64|aarch64'; then :; else
 -    cflags="$cflags -D__BLST_NO_ASM__"
 -fi
+-
+-CFLAGS="$CFLAGS $cflags"
+-TMPDIR=${TMPDIR:-/tmp}
 +cflags=$(powershell.exe -File ${RECIPE_DIR}/helpers/update_win_cflags.ps1 -predefs "$predefs")
  
- CFLAGS="$CFLAGS $cflags"
--TMPDIR=${TMPDIR:-/tmp}
--
 -rm -f libblst.a
 -trap '[ $? -ne 0 ] && rm -f libblst.a; rm -f *.o ${TMPDIR}/*.blst.$$' 0
++CFLAGS="$CFLAGS $cflags -D__BLST_DLL_MAIN__"
  
-@@ -121,3 +76,3 @@
-                 CFLAGS="${CFLAGS} --entry=DllMain ${TOP}/build/win64/dll.c"
--                CFLAGS="${CFLAGS} -nostdlib -lgcc";;
-+                CFLAGS="${CFLAGS} -lgcc";;
-         *)      sharedlib=libblst$dll.so;;
-@@ -125,3 +80,3 @@
+@@ -131,3 +70,3 @@
      (set -x; ${CC} -shared -o $sharedlib \
--                   -Wl,--whole-archive,libblst.a,--no-whole-archive ${CFLAGS} \
-+                   -Wl,--whole-archive,libblst.a,--no-whole-archive -Wl,--out-implib,blst.lib ${CFLAGS} \
-                    -Wl,-Bsymbolic)
+-                   -Wl,--whole-archive,libblst.a,--no-whole-archive ${CFLAGS})
++                   -Wl,--whole-archive,libblst.a,--no-whole-archive -Wl,--out-implib,blst.lib ${CFLAGS})
+ fi
