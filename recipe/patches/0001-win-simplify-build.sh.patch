@@ -71,3 +71,8 @@
 -trap '[ $? -ne 0 ] && rm -f libblst.a; rm -f *.o ${TMPDIR}/*.blst.$$' 0
 +CFLAGS="$CFLAGS $cflags -D__BLST_DLL_MAIN__"
  
+@@ -131,3 +70,3 @@
+     (set -x; ${CC} -shared -o $sharedlib \
+-                   -Wl,--whole-archive,libblst.a,--no-whole-archive ${CFLAGS})
++                   -Wl,--whole-archive,blst.lib,--no-whole-archive ${CFLAGS})
+ fi
